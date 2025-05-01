@@ -3,6 +3,7 @@ package com.ironhack.labjpa.model;
 import jakarta.persistence.*;
 
 @Entity
+@Table(name = "booking")
 public class FlightBooking {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

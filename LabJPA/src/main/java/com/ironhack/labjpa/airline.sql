@@ -27,11 +27,11 @@ CREATE TABLE bookings (
                           booking_id INT PRIMARY KEY AUTO_INCREMENT,
                           customer_id INT,
                           flight_id INT,
-                          FOREIGN KEY (customer_id) REFERENCES customers(customer_id),
-                          FOREIGN KEY (flight_id) REFERENCES flights(flight_id)
+                          FOREIGN KEY (customer_id) REFERENCES customer(customer_id),
+                          FOREIGN KEY (flight_id) REFERENCES flight(flight_id)
 );
 
-INSERT INTO customers (customer_name, customer_status, total_customer_mileage)
+INSERT INTO customer (customer_name, customer_status, total_customer_mileage)
 VALUES
     ('Agustine Riviera', 'Silver', 115235),
     ('Alaina Sepulvida', 'None', 6008),
@@ -49,7 +49,7 @@ VALUES
     ('Boeing 777', 264);
 
 
-INSERT INTO flights (flight_number, aircraft_id, flight_mileage)
+INSERT INTO flight (flight_number, aircraft_id, flight_mileage)
 VALUES
     ('DL143', 1, 135),
     ('DL122', 2, 4370),
@@ -57,7 +57,7 @@ VALUES
     ('DL222', 2, 1765),
     ('DL37', 1, 531);
 
-INSERT INTO bookings (customer_id, flight_id)
+INSERT INTO booking (customer_id, flight_id)
 VALUES
     (1, 11),
     (1, 12),
@@ -74,24 +74,24 @@ VALUES
     (8, 14);
 
 
-SELECT COUNT(DISTINCT flight_number) FROM flights;
-SELECT AVG(flight_mileage) FROM flights;
+SELECT COUNT(DISTINCT flight_number) FROM flight;
+SELECT AVG(flight_mileage) FROM flight;
 SELECT AVG(aircrafts.total_aircraft_seats) FROM aircrafts;
-SELECT customer_status, AVG(total_customer_mileage) FROM customers GROUP BY customer_status;
-SELECT customer_status, MAX(total_customer_mileage) FROM customers GROUP BY customer_status;
+SELECT customer_status, AVG(total_customer_mileage) FROM customer GROUP BY customer_status;
+SELECT customer_status, MAX(total_customer_mileage) FROM customer GROUP BY customer_status;
 SELECT COUNT(*) FROM aircrafts WHERE aircraft LIKE '%Boeing%';
-SELECT * FROM flights WHERE flight_mileage BETWEEN 300 AND 2000;
+SELECT * FROM flight WHERE flight_mileage BETWEEN 300 AND 2000;
 
 SELECT c.customer_status, AVG(f.flight_mileage)
-FROM bookings b
-         JOIN customers c ON b.customer_id = c.customer_id
-         JOIN flights f ON b.flight_id = f.flight_id
+FROM booking b
+         JOIN customer c ON b.customer_id = c.customer_id
+         JOIN flight f ON b.flight_id = f.flight_id
 GROUP BY c.customer_status;
 
 SELECT a.aircraft, COUNT(*) AS total_bookings
-FROM bookings b
-         JOIN customers c ON b.customer_id = c.customer_id
-         JOIN flights f ON b.flight_id = f.flight_id
+FROM booking b
+         JOIN customer c ON b.customer_id = c.customer_id
+         JOIN flight f ON b.flight_id = f.flight_id
          JOIN aircrafts a ON f.aircraft_id = a.aircraft_id
 WHERE c.customer_status = 'Gold'
 GROUP BY a.aircraft
